@@ -29,17 +29,25 @@ def _events_from_calendar(cal, start, end):
     return list(of(cal).between(start, end))
 
 
+def _value_to_datetime(value, tz):
+    if isinstance(value, datetime):
+        if value.tzinfo is None:
+            return value.replace(tzinfo=tz)
+        return value.astimezone(tz)
+    # value is a date
+    return datetime.combine(value, datetime.min.time(), tzinfo=tz)
+
+
 def _normalize_event(ev, tz):
-    start = ev.start
-    end = ev.end
-    if isinstance(start, datetime):
-        start = start.astimezone(tz)
+    start = _value_to_datetime(ev['DTSTART'].dt, tz)
+    dt_end = ev.get('DTEND')
+    if dt_end is not None:
+        end = _value_to_datetime(dt_end.dt, tz)
     else:
-        start = datetime.combine(start, datetime.min.time(), tzinfo=tz)
-    if isinstance(end, datetime):
-        end = end.astimezone(tz)
-    else:
-        end = datetime.combine(end, datetime.min.time(), tzinfo=tz) + timedelta(days=1)
+        if isinstance(ev['DTSTART'].dt, datetime):
+            end = start + timedelta(hours=1)
+        else:
+            end = start + timedelta(days=1)
     return {
         'summary': str(ev.get('summary', '')),
         'description': str(ev.get('description', '')),
