@@ -1,0 +1,2 @@
+# 每天早上 7:00 打印今日 Notion Calendar 任务清单
+0 7 * * * cd /home/pi/blue-notion-calendar-printer && /home/pi/blue-notion-calendar-printer/venv/bin/python /home/pi/blue-notion-calendar-printer/daily_print.py >> /home/pi/blue-notion-calendar-printer/daily_print.log 2>&1

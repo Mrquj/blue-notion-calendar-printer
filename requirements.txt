@@ -1,0 +1,7 @@
+icalendar
+recurring-ical-events
+python-dateutil
+requests
+pyserial
+Pillow
+python-dotenv

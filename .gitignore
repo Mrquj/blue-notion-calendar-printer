@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+*.pyc
+*.log
+.env
+resources/zpix.ttf
+temp.bin
